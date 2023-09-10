@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="fragments :: page_head('Questions', 'tag')" />
+</head>
+<body>
+<div th:replace="navigation :: header_menu"></div>
+<a th:href="@{/manage/questions/new}">Add</a>
+<table class="table table-bordered table-striped table-hover table-responsive-xl">
+    <tr>
+        <th>ID</th>
+        <th>Content</th>
+        <th>Topics</th>
+        <th>Level</th>
+        <th></th>
+    </tr>
+    <tr th:each="question : ${questions}">
+        <td>[[${question.id}]]</td>
+        <td>[[${question.content}]]</td>
+        <td>[[${question.topic.name}]]</td>
+        <td>[[${question.level}]]</td>
+        <td><a th:href="@{'/manage/questions/edit/'+${question.id}}">Edit</a>
+            &nbsp;
+            <a th:href="@{'/manage/questions/delete/'+${question.id}}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

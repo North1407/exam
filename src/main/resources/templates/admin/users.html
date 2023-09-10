@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head th:replace="fragments :: page_head('Users', 'tag')" />
+</head>
+<body>
+<div th:replace="navigation :: header_menu"></div>
+<table class="table table-bordered table-striped table-hover table-responsive-xl">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Enabled</th>
+        <th></th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td>[[${user.id}]]</td>
+        <td>[[${user.username}]]</td>
+        <td>[[${user.role.name}]]</td>
+        <td>[[${user.enabled}]]</td>
+        <td><a th:href="@{'/manage/users/edit/'+${user.id}}">Edit</a>
+        &nbsp;
+       <a th:href="@{'/manage/users/delete/'+${user.id}}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

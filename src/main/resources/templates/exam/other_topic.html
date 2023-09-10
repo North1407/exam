@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .content-container {
+            display: flex;
+        }
+
+        .left-pane {
+            flex: 1;
+            background-color: lightgray;
+        }
+
+        .right-pane {
+            width: 200px;
+            background-color: lightblue;
+        }
+
+        .challenges-list {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .challenge-list-filter {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="content-container">
+    <div class="left-pane">
+        <div class="challenges-list">
+            <!-- Nội dung danh sách challenges ở đây -->
+            <ul>
+                <li th:each="topic : ${topics}">
+                    <a class="js-track-click challenge-list-item" style="font-size: 22px" th:href="@{'/exam/topics/'+ ${topic.id}}">[[${topic.name}]]</a><br>
+                </li>
+                <!-- Thêm các mục khác tại đây -->
+            </ul>
+        </div>
+    </div>
+    <div class="right-pane">
+        <div class="challenge-list-filter">
+            <!-- Nội dung bộ lọc challenges ở đây -->
+            <label for="difficulty">Chọn độ khó:</label>
+            <select id="difficulty">
+                <option value="easy">Dễ</option>
+                <option value="medium">Trung bình</option>
+                <option value="hard">Khó</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lấy tất cả các phần tử có class "js-track-click challenge-list-item"
+    const challengeItems = document.querySelectorAll('.js-track-click.challenge-list-item');
+
+    // Đặt sự kiện nhấp chuột cho mỗi mục trong danh sách challenges
+    challengeItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Lấy giá trị data-challenge-id để biết mục nào đã được chọn
+            const challengeId = this.getAttribute('data-challenge-id');
+
+            // Thực hiện xử lý khi mục được chọn
+            console.log(`Mục ${challengeId} đã được chọn.`);
+            // Thêm mã JavaScript tùy chỉnh của bạn ở đây
+        });
+    });
+</script>
+</body>
+</html>

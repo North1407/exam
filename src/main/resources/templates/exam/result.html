@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="fragments :: page_head('Do Exam', 'tag')" />
+</head>
+<body>
+<div th:replace="navigation :: header_menu"></div>
+<div style="color: red" class="text-center">
+    <h2>Congratulations on completing the test</h2>
+    <p>Your mark is: [[${mark}]]</p>
+</div>
+<div th:object="${result}">
+    <div th:each="question, iter : ${result.questions}" class="question-container">
+        <p style="font-size: 24px;" th:text="'Question '+ ${iter.index + 1 +': '+ question.content}"></p>
+        <div th:each="answer : ${question.answers}" th:class="${answer.isCorrect} ? 'correct' : (${#lists.contains(result.answers, answer)} ? 'incorrect' : '')">
+            <label th:if="${question.trueAnswer != 1}">
+                <input type="checkbox" th:field="*{answers}" th:name="${question.id}" th:value="${answer.id}" disabled>
+                <span th:text="${answer.content}"></span>
+            </label>
+            <label th:if="${question.trueAnswer == 1}">
+                <input type="radio" th:name="${question.id}"  th:checked="${#lists.contains(result.answers, answer)}" th:value="${answer.id}" disabled>
+                <span th:text="${answer.content}"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<br>
+
+</body>
+</html>

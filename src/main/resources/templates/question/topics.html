@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head th:replace="fragments :: page_head('Topics', 'tag')" />
+</head>
+<body>
+<div th:replace="navigation :: header_menu"></div>
+<table class="table table-bordered table-striped table-hover table-responsive-xl">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    <tr th:each="topic : ${topics}">
+        <td>[[${topic.id}]]</td>
+        <td>[[${topic.name}]]</td>
+        <td><a th:href="@{'manage/topics/edit/'+${topic.id}}">Edit</a>
+            &nbsp;
+            <a th:href="@{'manage/topics/delete/'+${topic.id}}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
