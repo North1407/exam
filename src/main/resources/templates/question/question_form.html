@@ -7,9 +7,9 @@
 <div th:replace="navigation :: header_menu"></div>
 
 <div class="container" style="max-width: 750px; margin: 0 auto;">
-    <h1 class="text-center">Create a Question</h1>
-    <form th:action="@{/manage/questions/create}" th:object="${question}" method="post">
-
+    <h1 class="text-center">[[${title}]]</h1>
+    <form th:action="@{/manage/questions/save}" th:object="${question}" method="post">
+        <input type="hidden" th:field="*{id}"/>
         <div class="form-group">
             <label for="topics">Topic:</label>
             <select id="topics" th:field="*{topic}" class="form-control">
@@ -30,29 +30,32 @@
         </div>
 
         <div class="form-group">
-            <label >Content:</label>
+            <label>Content:</label>
             <input type="text" class="form-control" name="content" maxlength="255" th:field="*{content}"/>
         </div>
 
 
-            <th:block th:each="answer, status : ${question.answers}" class="form-group row" th:id="'divDetail' + ${status.index}">
-                <input type="hidden" name="detailIDs" th:value="${answer.id}"/>
+        <div th:each="answer, status : ${question.answers}" class="form-group row"
+             th:id="'divDetail' + ${status.index}">
+            <input type="hidden" name="answerIDs" th:value="${answer.id}"/>
 
-                <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control" name="answerContents" maxlength="255" th:value="${answer.content}"/>
-                </div>
+            <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="answerContents" maxlength="255"
+                       th:value="${answer.content}"/>
+            </div>
 
-                <label for="true" class="col-sm-1 col-form-label">True:</label>
-                <div class="col-sm-1">
-                    <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255"
-                           th:checked="${answer.isCorrect}" th:value="${answer.isCorrect ? '1' : '0'}"/>
-                </div>
-            </th:block>
+            <label class="col-sm-1 col-form-label">True:</label>
+            <div class="col-sm-2">
+                <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255"
+                       th:id="${status.index}" th:checked="${answer.isCorrect}"
+                       value='1'/>
+                <input type="hidden" th:id="'hidden-'+${status.index}" name="answerCorrects" value='0'>
+            </div>
+        </div>
 
 
-
-        <div class="form-group row" th:id="'divDetail' + ${#lists.size(question.answers)}">
+        <div th:if="${question.id==null}" class="form-group row" th:id="'divDetail' + ${#lists.size(question.answers)}">
             <input type="hidden" name="answerIDs" value="0"/>
 
             <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
@@ -60,10 +63,11 @@
                 <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer"/>
             </div>
 
-            <label for="true" class="col-sm-1 col-form-label">True:</label>
+            <label class="col-sm-1 col-form-label">True:</label>
             <div class="col-sm-2">
-                <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255" value='1' id="true">
-                <input type="hidden" class="hidden-input" name="answerCorrects" value='0' >
+                <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255"
+                       value='1' th:id="${#lists.size(question.answers)}">
+                <input type="hidden" th:id="'hidden-'+${#lists.size(question.answers)}" name="answerCorrects" value='0'>
             </div>
         </div>
 
@@ -73,8 +77,8 @@
             <input type="button" class="btn btn-secondary" value="Add More Answer" onclick="addNextAnswerSection()"/>
         </div>
         &nbsp;
-        <div class="text-center">
-            <input type="submit" class="btn btn-primary" value="Create Question"/>
+        <div class="text-center" style="margin-bottom: 25px">
+            <input type="submit" class="btn btn-primary" value="Save Question"/>
         </div>
     </form>
 </div>

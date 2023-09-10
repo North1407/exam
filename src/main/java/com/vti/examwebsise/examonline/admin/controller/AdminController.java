@@ -53,14 +53,27 @@ public class AdminController {
         List<Topic> topics = topicService.getAllTopics();
         model.addAttribute("question",new Question());
         model.addAttribute("topics",topics);
+        model.addAttribute("title","New Question");
         return "question/question_form";
     }
-    @PostMapping("/questions/create")
+    @PostMapping("/questions/save")
     public String saveQuestion(Question question,@RequestParam("answerIDs")String[] answerIds,@RequestParam("answerContents")String[] answerContents,
                                @RequestParam("answerCorrects")String[] ansCorrects){
     questionService.save(question,answerIds,answerContents,ansCorrects);
-
-
-        return "home";
+        return "redirect:/manage/questions";
+    }
+    @GetMapping("/questions/edit/{id}")
+    public String editQuestion(@PathVariable("id")Integer id,Model model){
+        Question question = questionService.getQuestionById(id);
+        List<Topic> topics = topicService.getAllTopics();
+        model.addAttribute("question",question);
+        model.addAttribute("topics",topics);
+        model.addAttribute("title","Edit Question");
+        return "question/question_form";
+    }
+    @GetMapping("/questions/delete/{id}")
+    public String deleteQuestion(@PathVariable("id")Integer id){
+        questionService.deleteQuestion(id);
+        return "redirect:/manage/questions";
     }
 }

@@ -7,17 +7,22 @@ $(document).ready(function() {
 
 });
 const checkboxes = document.querySelectorAll('.checkbox');
-const hiddenInput = document.querySelector('.hidden-input');
-// Thêm sự kiện change cho từng checkbox
 checkboxes.forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
-        // Kiểm tra từng checkbox và đặt giá trị dựa trên trạng thái checked
+        // Lấy id của checkbox đang thay đổi
+        const checkboxId = this.id;
+
+        // Tạo id của input hidden tương ứng
+        const hiddenInputId = `hidden-${checkboxId}`;
+
+        // Tìm input hidden bằng id và xóa nó nếu checkbox được chọn
+        const hiddenInput = document.getElementById(hiddenInputId);
         if (this.checked) {
-            // Nếu checkbox được chọn, xóa dòng input hidden
             hiddenInput.remove();
         }
     });
 });
+
 
 function addNextAnswerSection() {
     allDivDetails = $("[id^='divDetail']");
@@ -33,10 +38,10 @@ function addNextAnswerSection() {
                 <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer"/>
             </div>
 
-            <label for="true" class="col-sm-1 col-form-label">True:</label>
+            <label class="col-sm-1 col-form-label">True:</label>
             <div class="col-sm-2">
-                <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255" value='1' id="true">
-                <input type="hidden" class="hidden-input" name="answerCorrects" value='0' id="true">
+                <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255" value='1' id="${divDetailsCount}">
+                <input type="hidden" id="hidden-${divDetailsCount}" name="answerCorrects" value='0'>
             </div>
         </div>
     `;
@@ -44,12 +49,13 @@ function addNextAnswerSection() {
     $("#divQuestionAnswers").append(htmlAnswerSection);
 
     // Đính kèm sự kiện change cho checkbox trong phần tử mới
-    const hiddenInput = document.querySelector('.hidden-input');
+
     const newCheckbox = $("#divDetail" + divDetailsCount).find('.checkbox');
     newCheckbox.on('change', function () {
-        // Kiểm tra từng checkbox và đặt giá trị dựa trên trạng thái checked
+        const checkboxId = this.id;
+        const hiddenInputId = `hidden-${checkboxId}`;
+        const hiddenInput = document.getElementById(hiddenInputId);
         if (this.checked) {
-            // Nếu checkbox được chọn, xóa dòng input hidden
             hiddenInput.remove();
         }
     });

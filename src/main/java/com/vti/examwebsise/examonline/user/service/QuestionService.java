@@ -5,10 +5,12 @@ import com.vti.examwebsise.examonline.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Transactional
 public class QuestionService {
     @Autowired
     private QuestionRepo repo;
@@ -24,13 +26,21 @@ public class QuestionService {
                 trueCount++;
             }
             if (answerIds[i].equals("0")) {
-                question.addAnswer(answerContents[i], Boolean.parseBoolean(ansCorrects[i]));
+                question.addAnswer(answerContents[i], "1".equals(ansCorrects[i]));
             } else {
-                question.addAnswer(Integer.valueOf(answerIds[i]), answerContents[i], Boolean.parseBoolean(ansCorrects[i]));
+                question.addAnswer(Integer.valueOf(answerIds[i]), answerContents[i],"1".equals(ansCorrects[i]));
             }
         }
         question.setTrueAnswer(trueCount);
         System.out.println(question);
         repo.save(question);
+    }
+
+    public void deleteQuestion(Integer id) {
+        repo.deleteById(id);
+    }
+
+    public Question getQuestionById(Integer id) {
+        return repo.findById(id).orElseThrow(()->new RuntimeException("Question not found"));
     }
 }

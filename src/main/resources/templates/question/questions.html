@@ -5,7 +5,11 @@
 </head>
 <body>
 <div th:replace="navigation :: header_menu"></div>
-<a th:href="@{/manage/questions/new}">Add</a>
+<div class="text-center" style="margin-top: 25px">
+    <input type="submit" class="btn btn-primary" onclick="window.location.href='/manage/questions/new'" value="Add Question"/>
+</div>
+<div class="container" style="max-width: 2150px; margin: 0 auto;">
+    <h1 class="text-center">Questions</h1>
 <table class="table table-bordered table-striped table-hover table-responsive-xl">
     <tr>
         <th>ID</th>
