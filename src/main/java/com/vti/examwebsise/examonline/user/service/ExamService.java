@@ -1,5 +1,6 @@
 package com.vti.examwebsise.examonline.user.service;
 
+import com.vti.examwebsise.examonline.admin.controller.admin.service.SettingRepo;
 import com.vti.examwebsise.examonline.entity.*;
 import com.vti.examwebsise.examonline.sercutity.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class ExamService {
     TopicRepo topicRepo;
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    SettingRepo settingRepo;
 
 
     public List<Topic> getTopics() {
@@ -28,10 +31,12 @@ public class ExamService {
     }
 
     public Exam createExam(Integer topicId) {
-        List<Question> questions = questionRepo.getExamQuestion(10,topicId);
+        int numberOfQuestion = settingRepo.findByName("Number of question");
+        int timePerExam = settingRepo.findByName("Time per exam");
+        List<Question> questions = questionRepo.getExamQuestion(numberOfQuestion,topicId);
         Exam exam = new Exam();
         exam.setStartTime(new Date());
-        exam.setEndTime(new Date(exam.getStartTime().getTime()+61000));
+        exam.setEndTime(new Date(exam.getStartTime().getTime()+(timePerExam+1)* 1000L));
         exam.setMark(0);
         exam.setQuestions(questions);
         return examRepo.save(exam);

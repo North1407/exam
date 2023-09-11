@@ -15,16 +15,6 @@ import java.util.*;
 @Controller
 public class ExamController {
     @Autowired
-    QuestionRepo questionRepo;
-    @Autowired
-    AnswerRepo answerRepo;
-    @Autowired
-    ExamRepo examRepo;
-    @Autowired
-    TopicRepo topicRepo;
-    @Autowired
-    UserRepo userRepo;
-    @Autowired
     ExamService service;
 
     @GetMapping("/topics")

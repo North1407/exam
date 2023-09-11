@@ -1,6 +1,8 @@
 package com.vti.examwebsise.examonline.admin.controller;
 
+import com.vti.examwebsise.examonline.admin.controller.admin.service.SettingService;
 import com.vti.examwebsise.examonline.entity.Question;
+import com.vti.examwebsise.examonline.entity.Setting;
 import com.vti.examwebsise.examonline.entity.Topic;
 import com.vti.examwebsise.examonline.entity.User;
 import com.vti.examwebsise.examonline.user.service.QuestionService;
@@ -23,6 +25,8 @@ public class AdminController {
     private QuestionService questionService;
     @Autowired
     private TopicService topicService;
+    @Autowired
+    private SettingService settingService;
 
     @GetMapping("/users")
     public String viewAllUser(Model model){
@@ -30,9 +34,19 @@ public class AdminController {
         model.addAttribute("users",users);
         return "admin/users";
     }
+    @GetMapping("/settings")
+    public String viewAllSettings(Model model){
+        List<Setting> settings = settingService.getAllSettings();
+        model.addAttribute("settings",settings);
+        return "admin/settings";
+    }
+    @PostMapping("/settings/save")
+    public String saveAllSettings(@RequestParam("settingIds")String[] ids,@RequestParam("settingValues")String[] values){
+        settingService.saveAllSettings(ids,values);
+        return "redirect:/manage/settings";
+    }
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable("id")Integer id,Model model){
-
         return "user_form";
     }
     @GetMapping("/questions")
