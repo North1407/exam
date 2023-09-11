@@ -2,8 +2,10 @@ package com.vti.examwebsise.examonline.user.controller;
 
 import com.vti.examwebsise.examonline.entity.Exam;
 import com.vti.examwebsise.examonline.entity.User;
-import com.vti.examwebsise.examonline.user.service.ExamRepo;
-import com.vti.examwebsise.examonline.user.service.UserRepo;
+import com.vti.examwebsise.examonline.user.repository.ExamRepo;
+import com.vti.examwebsise.examonline.user.repository.UserRepo;
+import com.vti.examwebsise.examonline.user.service.ExamService;
+import com.vti.examwebsise.examonline.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,25 +21,25 @@ import java.util.List;
 @RequestMapping("/results")
 public class ResultController {
     @Autowired
-    ExamRepo examRepo;
+    ExamService examService;
     @Autowired
-    UserRepo userRepo;
+    UserService userService;
 
     @GetMapping("")
-    public String getAllResult(Model model, HttpServletRequest request){
+    public String getAllResult(Model model, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        User user = userRepo.findByUsername(username);
+        User user = userService.getByUsername(username);
         List<Exam> exams = user.getExams();
         Collections.sort(exams);
         model.addAttribute("exams", exams);
-        return "exam/results";
+        return "users/exams/results";
     }
 
     @GetMapping("/get/{id}")
-    public String getResult(@PathVariable("id")Integer id, Model model){
-        Exam exam = examRepo.getById(id);
-        model.addAttribute("result",exam);
-        model.addAttribute("mark",exam.getMark());
-        return "exam/result";
+    public String getResult(@PathVariable("id") Integer id, Model model) {
+        Exam exam = examService.get(id);
+        model.addAttribute("result", exam);
+        model.addAttribute("mark", exam.getMark());
+        return "users/exams/result";
     }
 }

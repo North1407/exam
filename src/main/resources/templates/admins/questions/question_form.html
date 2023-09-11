@@ -31,7 +31,7 @@
 
         <div class="form-group">
             <label>Content:</label>
-            <input type="text" class="form-control" name="content" maxlength="255" th:field="*{content}"/>
+            <input type="text" class="form-control" name="content" maxlength="255" th:field="*{content}" required/>
         </div>
 
 
@@ -42,7 +42,7 @@
             <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" name="answerContents" maxlength="255"
-                       th:value="${answer.content}"/>
+                       th:value="${answer.content}" required/>
             </div>
 
             <label class="col-sm-1 col-form-label">True:</label>
@@ -60,7 +60,7 @@
 
             <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer"/>
+                <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer" required/>
             </div>
 
             <label class="col-sm-1 col-form-label">True:</label>

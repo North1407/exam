@@ -1,93 +1,57 @@
 package com.vti.examwebsise.examonline.admin.controller;
 
-import com.vti.examwebsise.examonline.admin.controller.admin.service.SettingService;
-import com.vti.examwebsise.examonline.entity.Question;
+import com.vti.examwebsise.examonline.admin.service.SettingService;
+import com.vti.examwebsise.examonline.entity.Exam;
 import com.vti.examwebsise.examonline.entity.Setting;
 import com.vti.examwebsise.examonline.entity.Topic;
-import com.vti.examwebsise.examonline.entity.User;
-import com.vti.examwebsise.examonline.user.service.QuestionService;
+import com.vti.examwebsise.examonline.user.service.ExamService;
 import com.vti.examwebsise.examonline.user.service.TopicService;
-import com.vti.examwebsise.examonline.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("/manage")
 public class AdminController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private QuestionService questionService;
+
     @Autowired
     private TopicService topicService;
     @Autowired
     private SettingService settingService;
-
-    @GetMapping("/users")
-    public String viewAllUser(Model model){
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users",users);
-        return "admin/users";
+    @Autowired
+    private ExamService examService;
+    @GetMapping("/topics")
+    public String getAllTopics(Model model) {
+        List<Topic> topics = topicService.getAllTopics();
+        model.addAttribute("topics", topics);
+        return "admins/topics";
+    }
+    @GetMapping("/exams")
+    public String getAllExams(Model model) {
+        List<Exam> exams = examService.getAllExams();
+        model.addAttribute("exams", exams);
+        return "admins/exams";
+    }
+    @GetMapping("results/get/{id}")
+    public String getResult(@PathVariable("id") Integer id, Model model) {
+        Exam exam = examService.get(id);
+        model.addAttribute("result", exam);
+        model.addAttribute("mark", exam.getMark());
+        return "users/exams/result";
     }
     @GetMapping("/settings")
-    public String viewAllSettings(Model model){
+    public String viewAllSettings(Model model) {
         List<Setting> settings = settingService.getAllSettings();
-        model.addAttribute("settings",settings);
-        return "admin/settings";
-    }
-    @PostMapping("/settings/save")
-    public String saveAllSettings(@RequestParam("settingIds")String[] ids,@RequestParam("settingValues")String[] values){
-        settingService.saveAllSettings(ids,values);
-        return "redirect:/manage/settings";
-    }
-    @GetMapping("/users/edit/{id}")
-    public String editUser(@PathVariable("id")Integer id,Model model){
-        return "user_form";
-    }
-    @GetMapping("/questions")
-    public String getAllQuestions(Model model){
-        List<Question> questions = questionService.getAllQuestions();
-        model.addAttribute("questions",questions);
-        return "question/questions";
-    }
-    @GetMapping("/topics")
-    public String getAllTopics(Model model){
-        List<Topic> topics = topicService.getAllTopics();
-        model.addAttribute("topics",topics);
-        return "question/topics";
+        model.addAttribute("settings", settings);
+        return "admins/settings";
     }
 
-    @GetMapping("/questions/new")
-    public String newQuestion(Model model){
-        List<Topic> topics = topicService.getAllTopics();
-        model.addAttribute("question",new Question());
-        model.addAttribute("topics",topics);
-        model.addAttribute("title","New Question");
-        return "question/question_form";
-    }
-    @PostMapping("/questions/save")
-    public String saveQuestion(Question question,@RequestParam("answerIDs")String[] answerIds,@RequestParam("answerContents")String[] answerContents,
-                               @RequestParam("answerCorrects")String[] ansCorrects){
-    questionService.save(question,answerIds,answerContents,ansCorrects);
-        return "redirect:/manage/questions";
-    }
-    @GetMapping("/questions/edit/{id}")
-    public String editQuestion(@PathVariable("id")Integer id,Model model){
-        Question question = questionService.getQuestionById(id);
-        List<Topic> topics = topicService.getAllTopics();
-        model.addAttribute("question",question);
-        model.addAttribute("topics",topics);
-        model.addAttribute("title","Edit Question");
-        return "question/question_form";
-    }
-    @GetMapping("/questions/delete/{id}")
-    public String deleteQuestion(@PathVariable("id")Integer id){
-        questionService.deleteQuestion(id);
-        return "redirect:/manage/questions";
+    @PostMapping("/settings/save")
+    public String saveAllSettings(@RequestParam("settingIds") String[] ids, @RequestParam("settingValues") String[] values) {
+        settingService.saveAllSettings(ids, values);
+        return "redirect:/manage/settings";
     }
 }

@@ -10,7 +10,7 @@ import java.util.*;
 @Table(name = "exams")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exam extends IdBasedEntity implements Comparable<Exam>{
+public class Exam extends IdBasedEntity implements Comparable<Exam> {
     @Column(nullable = false)
     private float mark;
 
@@ -36,6 +36,10 @@ public class Exam extends IdBasedEntity implements Comparable<Exam>{
 
     @Override
     public int compareTo(Exam o) {
-        return o.getId()-this.id;
+        return o.getId() - this.id;
+    }
+
+    public String toString() {
+        return "Exam [mark=" + mark + ", startTime=" + startTime + ", endTime=" + endTime + ", topic=" + questions.get(0).getTopic() + "]";
     }
 }

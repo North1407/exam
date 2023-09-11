@@ -1,12 +1,11 @@
 package com.vti.examwebsise.examonline.user.service;
 
 import com.vti.examwebsise.examonline.entity.Question;
-import com.vti.examwebsise.examonline.entity.User;
+import com.vti.examwebsise.examonline.user.repository.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -32,7 +31,6 @@ public class QuestionService {
             }
         }
         question.setTrueAnswer(trueCount);
-        System.out.println(question);
         repo.save(question);
     }
 

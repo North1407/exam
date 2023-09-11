@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head th:replace="fragments :: page_head('Do Exam', 'tag')" />
+    <head th:replace="fragments :: page_head('Do Exam', 'tag')"/>
 </head>
 <body>
 <div th:replace="navigation :: header_menu"></div>
 <form id="examForm" th:action="@{/exam/submit}" th:object="${exam}" method="post">
     <div id="countdown">Time left: <span id="timer"></span></div>
-    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{id}"/>
+
     <div th:each="question, iter : *{questions}" class="question-container">
         <p style="font-size: 24px;" th:text="'Question ' + ${iter.index + 1} + ': ' + ${question.content}"></p>
         <div th:each="answer: ${question.answers}">
@@ -16,13 +17,13 @@
                 <span th:text="${answer.content}"></span>
             </label>
             <label th:if="${question.trueAnswer == 1}">
-                <input type="radio" th:attr="name=${question.id}"   th:value="${answer.id}" required>
+                <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}" required>
                 <span th:text="${answer.content}"></span>
             </label>
         </div>
-        <input type="hidden" th:field="*{answers}" th:id="${'q'+question.id}" value="" />
-
+        <input type="hidden" th:field="*{answers}" th:id="${'q'+question.id}" value=""/>
     </div>
+
     <input type="submit" value="Submit">
 </form>
 
@@ -40,8 +41,8 @@
             timerElement.textContent = "Hết thời gian";
             examForm.submit();
         } else {
-            var seconds = Math.floor(distance/ 1000);
-            timerElement.textContent = seconds + " giây";
+            var seconds = Math.floor(distance / 1000);
+            timerElement.textContent = seconds + " seconds";
         }
     }, 1000); // Cập nhật thời gian đếm ngược mỗi 1 giây (1000ms)
 

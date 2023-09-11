@@ -1,5 +1,6 @@
-package com.vti.examwebsise.examonline.admin.controller.admin.service;
+package com.vti.examwebsise.examonline.admin.service;
 
+import com.vti.examwebsise.examonline.admin.repository.SettingRepo;
 import com.vti.examwebsise.examonline.entity.Setting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

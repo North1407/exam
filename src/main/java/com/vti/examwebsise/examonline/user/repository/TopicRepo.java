@@ -1,4 +1,4 @@
-package com.vti.examwebsise.examonline.user.service;
+package com.vti.examwebsise.examonline.user.repository;
 
 
 import com.vti.examwebsise.examonline.entity.Topic;

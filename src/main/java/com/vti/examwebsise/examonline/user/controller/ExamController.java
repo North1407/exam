@@ -2,7 +2,7 @@ package com.vti.examwebsise.examonline.user.controller;
 
 import com.vti.examwebsise.examonline.entity.*;
 import com.vti.examwebsise.examonline.sercutity.MyUserDetails;
-import com.vti.examwebsise.examonline.user.service.*;
+import com.vti.examwebsise.examonline.user.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,12 +21,12 @@ public class ExamController {
     public String getAllExamTopic(Model model) {
         List<Topic> topics = service.getTopics();
         model.addAttribute("topics", topics);
-        return "exam/topics";
+        return "users/exams/topics";
     }
 
     @GetMapping("topics/{id}")
-    public String createNewExamByTopic(@PathVariable("id") Integer id) {
-        Exam savedExam = service.createExam(id);
+    public String createNewExamByTopic(@PathVariable("id") Integer id,@RequestParam("difficulty") String difficulty) {
+        Exam savedExam = service.createExam(id,difficulty);
         return "redirect:/exam/new/" + savedExam.getId();
     }
 
@@ -37,7 +37,7 @@ public class ExamController {
         model.addAttribute("exam", exam);
         model.addAttribute("answerIds", answerIds);
         model.addAttribute("endTime", exam.getEndTime().getTime());
-        return "exam/exam-form";
+        return "users/exams/exam-form";
     }
 
     @PostMapping("/submit")
@@ -46,7 +46,7 @@ public class ExamController {
         Exam examInDb = service.save(exam.getId(),  answers, loggerUser);
         model.addAttribute("result", examInDb);
         model.addAttribute("mark", examInDb.getMark());
-        return "exam/result";
+        return "users/exams/result";
     }
 }
 

@@ -1,4 +1,4 @@
-package com.vti.examwebsise.examonline.admin.controller.admin.service;
+package com.vti.examwebsise.examonline.admin.repository;
 
 import com.vti.examwebsise.examonline.entity.Setting;
 import org.springframework.data.jpa.repository.JpaRepository;

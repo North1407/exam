@@ -17,16 +17,17 @@ public class UserController {
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new User());
-        return "register_form";
+        return "users/register_form";
     }
-    @PostMapping("/create_customer")
-    public String createCustomer(User user,Model model)  {
-        if(userService.isUsernameUnique(user.getUsername())) {
+
+    @PostMapping("/save_user")
+    public String createCustomer(User user, Model model) {
+        if (userService.isUsernameUnique(user.getUsername())) {
             userService.registerUser(user);
             return "redirect:/login";
-        }else{
-            model.addAttribute("message","Username existed!");
-            return "register_form";
+        } else {
+            model.addAttribute("message", "Username existed!");
+            return "users/register_form";
         }
     }
 }

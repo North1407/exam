@@ -2,6 +2,7 @@ package com.vti.examwebsise.examonline.user.service;
 
 import com.vti.examwebsise.examonline.entity.Role;
 import com.vti.examwebsise.examonline.entity.User;
+import com.vti.examwebsise.examonline.user.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    public User getByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 }
