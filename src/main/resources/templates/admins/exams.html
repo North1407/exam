@@ -10,6 +10,7 @@
     <table  class="table table-bordered table-striped table-hover table-responsive-xl">
         <tr>
             <th>Index</th>
+            <th>User</th>
             <th>Topic</th>
             <th>Mark</th>
             <th>Start Time</th>
@@ -18,6 +19,7 @@
         </tr>
         <tr th:each="exam,iter : ${exams}">
             <td th:text="${iter.index + 1}"></td>
+            <td th:text="${exam.user.username}"></td>
             <td th:text="${exam.questions[0].topic.name}"></td>
             <td th:text="${exam.mark}"></td>
             <td th:text="${exam.startTime}"></td>

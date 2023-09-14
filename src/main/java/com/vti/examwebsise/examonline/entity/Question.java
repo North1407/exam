@@ -20,6 +20,7 @@ public class Question extends IdBasedEntity {
     private int level;
     @Column(nullable = false)
     private int trueAnswer;
+    private boolean enabled = true;
     @ManyToOne
     @JoinColumn(name = "topic_id")
     private Topic topic;

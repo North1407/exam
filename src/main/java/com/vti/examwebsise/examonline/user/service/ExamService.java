@@ -31,7 +31,9 @@ public class ExamService {
     public List<Topic> getTopics() {
         return topicRepo.findAll();
     }
-
+    public List<Topic> getEnabledTopics() {
+        return topicRepo.findAllEnabled();
+    }
     public Exam createExam(Integer topicId, String difficulty) {
         int numberOfQuestion = settingRepo.findByName("Number of question");
         int timePerExam = settingRepo.findByName("Time per exam");
@@ -55,6 +57,7 @@ public class ExamService {
         int trueCounts = checkTrueAnswer(exam.getQuestions(), answers);
         exam.setMark((float) trueCounts / exam.getQuestions().size() * 10);
         User user = userRepo.findByUsername(loggerUser.getUsername());
+        exam.setUser(user);
         user.getExams().add(examRepo.save(exam));
         userRepo.save(user);
 

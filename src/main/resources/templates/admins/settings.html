@@ -5,12 +5,11 @@
 </head>
 <body>
 <div th:replace="navigation :: header_menu"></div>
-<div class="text-center" style="margin-top: 25px">
-    <input type="submit" class="btn btn-primary" onclick="window.location.href='/manage/settings/new'" value="Add Setting"/>
-</div>
-<br>
-<h1 class="text-center">Settings</h1>
 
+<h1 style="margin: 25px">Settings</h1>
+<div th:if="${message != null}" style="max-width: 350px;margin: 0 auto" class="alert alert-success text-center">
+    [[${message}]]
+</div>
 <form th:action="@{/manage/settings/save}" method="post"  style="max-width: 350px; margin: 0 auto">
 
     <div class="border border-secondary rounded p-3">

@@ -5,29 +5,49 @@
 </head>
 <body>
 <div th:replace="navigation :: header_menu"></div>
-<div class="text-center" style="margin-top: 25px">
-    <input type="submit" class="btn btn-primary" onclick="window.location.href='/manage/questions/new'" value="Add Question"/>
+<h1 class="text-center" style="margin-top: 25px">Questions Management</h1>
+<div >
+    <input style="margin-left: 15px" type="button" class="btn btn-primary" onclick="window.location.href='/manage/questions/new'" value="Add Question"/>
+    <div th:replace="fragments :: search_form_and_message()"></div>
+</div>
+<div style="margin-left: 15px">
+    <label for="filter">Topics:</label>
+    <select id="filter">
+        <option value="all">All Topics</option>
+        <div th:each="t : ${topics}">
+            <option th:text="${t.name}" th:value="${t.name}"></option>
+        </div>
+
+    </select>
 </div>
 <div class="container" style="max-width: 2150px; margin: 0 auto;">
-    <h1 class="text-center" style="margin-top: 25px">Questions</h1>
-<table class="table table-bordered table-striped table-hover table-responsive-xl">
+<table id="dataTable" class="table table-bordered table-striped table-hover table-responsive-xl">
+    <thead>
     <tr>
         <th>ID</th>
         <th>Content</th>
         <th>Topics</th>
         <th>Level</th>
+        <th>Enabled</th>
         <th></th>
-    </tr>
+    </tr></thead>
+    <tbody>
     <tr th:each="question : ${questions}">
         <td>[[${question.id}]]</td>
         <td>[[${question.content}]]</td>
         <td>[[${question.topic.name}]]</td>
         <td>[[${question.level}]]</td>
-        <td><a th:href="@{'/manage/questions/edit/'+${question.id}}">Edit</a>
+        <td>
+            <div th:replace="fragments :: status(${question.enabled}, 'question', '/manage/questions/' + ${question.id})"/>
+        <td>
+            &nbsp;<div th:replace="fragments :: edit('question', '/manage/questions/edit/'+${question.id})"/>
             &nbsp;
-            <a th:href="@{'/manage/questions/delete/'+${question.id}}">Delete</a>
+			<div th:replace="fragments :: delete('order', ${question.id}, '/manage/questions/delete/'+${question.id})" />
         </td>
-    </tr>
+    </tr></tbody>
 </table>
+</div>
+<div th:replace="fragments :: admin_footer"></div>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

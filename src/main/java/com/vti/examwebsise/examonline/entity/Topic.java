@@ -17,8 +17,7 @@ import java.util.List;
 public class Topic extends IdBasedEntity{
     @Column(nullable = false,unique = true)
     private String name;
-    @OneToMany(mappedBy = "topic")
-    private List<Question> questions;
+    private boolean enabled = true;
 
     public Topic(Integer id) {
         this.id = id;
@@ -27,4 +26,5 @@ public class Topic extends IdBasedEntity{
     public Topic(String name) {
         this.name = name;
     }
+
 }

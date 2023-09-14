@@ -40,6 +40,8 @@ public class ResultController {
         Exam exam = examService.get(id);
         model.addAttribute("result", exam);
         model.addAttribute("mark", exam.getMark());
+        model.addAttribute("time",exam.getEndTime());
+
         return "users/exams/result";
     }
 }

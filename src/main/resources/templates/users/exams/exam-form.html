@@ -6,10 +6,10 @@
 <body>
 <div th:replace="navigation :: header_menu"></div>
 <form id="examForm" th:action="@{/exam/submit}" th:object="${exam}" method="post">
-    <div id="countdown">Time left: <span id="timer"></span></div>
+    <div id="countdown" >Time left: <span id="timer"></span></div>
     <input type="hidden" th:field="*{id}"/>
 
-    <div th:each="question, iter : *{questions}" class="question-container">
+    <div th:each="question, iter : *{questions}" class="question-container" style="margin-top: 25px">
         <p style="font-size: 24px;" th:text="'Question ' + ${iter.index + 1} + ': ' + ${question.content}"></p>
         <div th:each="answer: ${question.answers}">
             <label th:if="${question.trueAnswer != 1}">
@@ -41,8 +41,10 @@
             timerElement.textContent = "Hết thời gian";
             examForm.submit();
         } else {
-            var seconds = Math.floor(distance / 1000);
-            timerElement.textContent = seconds + " seconds";
+            var minutes = Math.floor(distance / (1000 * 60)); // Chuyển đổi sang phút
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000); // Chuyển đổi sang giây
+
+            timerElement.textContent = minutes + " minutes " + seconds + " seconds"; // Hiển thị thời gian còn lại ở đơn vị phút và giây
         }
     }, 1000); // Cập nhật thời gian đếm ngược mỗi 1 giây (1000ms)
 
@@ -53,7 +55,6 @@
             document.getElementById('q' + questionId).value = answerId;
         });
     });
-
 
 </script>
 </body>

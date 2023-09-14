@@ -19,7 +19,7 @@ public class ExamController {
 
     @GetMapping("/topics")
     public String getAllExamTopic(Model model) {
-        List<Topic> topics = service.getTopics();
+        List<Topic> topics = service.getEnabledTopics();
         model.addAttribute("topics", topics);
         return "users/exams/topics";
     }
@@ -46,6 +46,7 @@ public class ExamController {
         Exam examInDb = service.save(exam.getId(),  answers, loggerUser);
         model.addAttribute("result", examInDb);
         model.addAttribute("mark", examInDb.getMark());
+        model.addAttribute("time",examInDb.getEndTime());
         return "users/exams/result";
     }
 }

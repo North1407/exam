@@ -3,13 +3,12 @@ package com.vti.examwebsise.examonline.admin.controller;
 import com.vti.examwebsise.examonline.admin.service.SettingService;
 import com.vti.examwebsise.examonline.entity.Exam;
 import com.vti.examwebsise.examonline.entity.Setting;
-import com.vti.examwebsise.examonline.entity.Topic;
 import com.vti.examwebsise.examonline.user.service.ExamService;
-import com.vti.examwebsise.examonline.user.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -17,18 +16,12 @@ import java.util.List;
 @RequestMapping("/manage")
 public class AdminController {
 
-    @Autowired
-    private TopicService topicService;
+
     @Autowired
     private SettingService settingService;
     @Autowired
     private ExamService examService;
-    @GetMapping("/topics")
-    public String getAllTopics(Model model) {
-        List<Topic> topics = topicService.getAllTopics();
-        model.addAttribute("topics", topics);
-        return "admins/topics";
-    }
+
     @GetMapping("/exams")
     public String getAllExams(Model model) {
         List<Exam> exams = examService.getAllExams();
@@ -50,8 +43,9 @@ public class AdminController {
     }
 
     @PostMapping("/settings/save")
-    public String saveAllSettings(@RequestParam("settingIds") String[] ids, @RequestParam("settingValues") String[] values) {
+    public String saveAllSettings(@RequestParam("settingIds") String[] ids, @RequestParam("settingValues") String[] values, RedirectAttributes re) {
         settingService.saveAllSettings(ids, values);
+        re.addFlashAttribute("message", "The settings have been saved successfully");
         return "redirect:/manage/settings";
     }
 }

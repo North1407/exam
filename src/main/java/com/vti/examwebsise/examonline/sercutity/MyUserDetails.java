@@ -23,13 +23,15 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role role = user.getRole();
 
-        List<SimpleGrantedAuthority> authories = new ArrayList<>();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        authories.add(new SimpleGrantedAuthority(role.getName()));
+        authorities.add(new SimpleGrantedAuthority(role.getName()));
 
-        return authories;
+        return authorities;
     }
-
+    public void setUsername(String username) {
+        this.user.setUsername(username);
+    }
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -57,7 +59,10 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 
+    public User getUser() {
+        return user;
+    }
 }

@@ -1,31 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head th:replace="fragments :: page_head('Topics', 'tag')" />
+    <head th:replace="fragments :: page_head('Topics', 'tag')"/>
 </head>
 <body>
 <div th:replace="navigation :: header_menu"></div>
-<div class="text-center" style="margin-top: 25px">
-    <input type="submit" class="btn btn-primary" onclick="window.location.href='/manage/topics/new'" value="Add Topic"/>
-</div>
-<br>
-    <h1 class="text-center">Topics</h1>
+<h1 class="text-center" style="margin: 25px">Topics Management</h1>
 <div class="container" style="max-width: 750px; margin: 0 auto;">
-<table class="table table-bordered table-striped table-hover table-responsive-xl">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th></th>
-    </tr>
-    <tr th:each="topic : ${topics}">
-        <td>[[${topic.id}]]</td>
-        <td>[[${topic.name}]]</td>
-        <td><a th:href="@{'manage/topics/edit/'+${topic.id}}">Edit</a>
-            &nbsp;
-            <a th:href="@{'manage/topics/delete/'+${topic.id}}">Delete</a>
-        </td>
-    </tr>
-</table>
+<form th:action="@{/manage/topics/save}" method="post">
+    <input type="hidden" name="topicId" th:value="${topicId}">
+    <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Topic name:</label>
+    <div class="col-sm-7">
+        <input class="form-control" type="text" name="topicName" th:value="${topicName}" required>
+    </div>
+    <div class="col-sm-2">
+        <input type="submit" value="Add">
+    </div>
+</div>
+</form>
+</div>
+<div class="container" style="max-width: 750px; margin: 0 auto;">
+    <table class="table table-bordered table-striped table-hover table-responsive-xl">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Enabled</th>
+            <th></th>
+        </tr>
+        <tr th:each="topic : ${topics}">
+            <td>[[${topic.id}]]</td>
+            <td>[[${topic.name}]]</td>
+            <td>
+                <div th:replace="fragments :: status(${topic.enabled}, 'topic', '/manage/topics/' + ${topic.id})"/>
+            <td><a th:href="@{'/manage/topics/edit/'+${topic.id}}">Edit</a>
+                &nbsp;
+                <a th:href="@{'/manage/topics/delete/'+${topic.id}}">Delete</a>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

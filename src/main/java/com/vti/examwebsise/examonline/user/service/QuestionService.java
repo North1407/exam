@@ -14,8 +14,11 @@ public class QuestionService {
     @Autowired
     private QuestionRepo repo;
 
-    public List<Question> getAllQuestions() {
-        return repo.findAll();
+    public List<Question> getAllQuestions(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return repo.findAll();
+        }
+        return repo.findAll(keyword);
     }
 
     public void save(Question question, String[] answerIds, String[] answerContents, String[] ansCorrects) {
@@ -40,5 +43,11 @@ public class QuestionService {
 
     public Question getQuestionById(Integer id) {
         return repo.findById(id).orElseThrow(()->new RuntimeException("Question not found"));
+    }
+
+    public void enableQuestion(Integer id, boolean status) {
+        Question question = repo.findById(id).orElseThrow(()->new RuntimeException("Question not found"));
+        question.setEnabled(status);
+        repo.save(question);
     }
 }

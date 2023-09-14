@@ -5,9 +5,10 @@
 </head>
 <body>
 <div th:replace="navigation :: header_menu"></div>
-<div style="color: red" class="text-center">
-    <h2>Congratulations on completing the test</h2>
-    <p>Your mark is: [[${mark}]]</p>
+<div style="color: red;margin: 25px" class="text-center" >
+    <h2 >Congratulations on completing the test</h2>
+    <span>Your mark is: [[${mark}]]</span>
+    &nbsp;<span>Time completed: [[${time}]]</span>
 </div>
 <div th:object="${result}">
     <div th:each="question, iter : ${result.questions}" class="question-container">

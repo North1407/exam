@@ -21,6 +21,7 @@
         <a class="topic-link" th:href="@{'/exam/topics/'+ ${topic.id} + '?difficulty=' + 0}">[[${topic.name}]]</a>
     </li>
 </ul>
+<!--<div th:replace="fragments :: footer"></div>-->
 <script>
     // Lấy tham chiếu đến select element và danh sách các liên kết
     const selectElement = document.getElementById("difficulty");

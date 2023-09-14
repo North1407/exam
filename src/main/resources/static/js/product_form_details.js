@@ -15,10 +15,25 @@ checkboxes.forEach(function (checkbox) {
         // Tạo id của input hidden tương ứng
         const hiddenInputId = `hidden-${checkboxId}`;
 
-        // Tìm input hidden bằng id và xóa nó nếu checkbox được chọn
+        // Tìm input hidden bằng id
         const hiddenInput = document.getElementById(hiddenInputId);
+
         if (this.checked) {
-            hiddenInput.remove();
+            // Nếu checkbox được chọn, xóa input hidden
+            if (hiddenInput) {
+                hiddenInput.remove();
+            }
+        } else {
+            // Nếu checkbox bị bỏ chọn và input hidden không tồn tại, tạo nó và thêm vào DOM
+            if (!hiddenInput) {
+                const newHiddenInput = document.createElement('input');
+                newHiddenInput.type = 'hidden';
+                newHiddenInput.id = hiddenInputId;
+                newHiddenInput.name = 'answerCorrects';
+                newHiddenInput.value = '0';
+                const parentDiv = this.parentElement;
+                parentDiv.appendChild(newHiddenInput);
+            }
         }
     });
 });
@@ -34,8 +49,8 @@ function addNextAnswerSection() {
             <input type="hidden" name="answerIDs" value="0"/>
 
             <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
-            <div class="col-sm-7">
-                <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer"/>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer" required/>
             </div>
 
             <label class="col-sm-1 col-form-label">True:</label>
@@ -43,10 +58,17 @@ function addNextAnswerSection() {
                 <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255" value='1' id="${divDetailsCount}">
                 <input type="hidden" id="hidden-${divDetailsCount}" name="answerCorrects" value='0'>
             </div>
+            <div class="col-sm-1">
+            <a class="btn fas fa-times-circle fa-2x icon-dark"
+			href="javascript:removeDetailSectionById('divDetail${divDetailsCount}')"
+			title="Remove this detail"></a>
         </div>
     `;
 
     $("#divQuestionAnswers").append(htmlAnswerSection);
+
+
+    $("input[name='answerContents']").last().focus();
 
     // Đính kèm sự kiện change cho checkbox trong phần tử mới
 

@@ -20,8 +20,7 @@ public class UserService {
     public void registerUser(User user) {
         user.setRole(new Role(2));
         user.setEnabled(true);
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+        encodePassword(user);
         userRepo.save(user);
     }
 
@@ -36,5 +35,40 @@ public class UserService {
 
     public User getByUsername(String username) {
         return userRepo.findByUsername(username);
+    }
+
+    public void deleteUser(Integer id) {
+        userRepo.deleteById(id);
+    }
+
+    public void enableUser(Integer id, boolean status) {
+        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEnabled(status);
+        userRepo.save(user);
+    }
+
+    public User updateAccount(User userInForm) {
+        User userInDB = userRepo.findById(userInForm.getId()).get();
+
+        if (!userInForm.getPassword().isEmpty()) {
+            userInDB.setPassword(userInForm.getPassword());
+            encodePassword(userInDB);
+        }
+
+        if (userInForm.getPhotos() != null) {
+            userInDB.setPhotos(userInForm.getPhotos());
+        }
+        userInDB.setRole(userInForm.getRole());
+        userInDB.setUsername(userInForm.getUsername());
+        return userRepo.save(userInDB);
+    }
+
+    private void encodePassword(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+    }
+
+    public User getUserById(Integer id) {
+        return userRepo.findById(id).get();
     }
 }

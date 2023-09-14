@@ -23,4 +23,6 @@ public class Role extends IdBasedEntity {
     public Role(Integer id) {
         this.id = id;
     }
+
+
 }

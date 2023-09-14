@@ -19,20 +19,21 @@ public class User extends IdBasedEntity {
     private String username;
     @Column(nullable = false)
     private String password;
+    private String photos;
     private boolean enabled;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_exams",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "exam_id")
-    )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Exam> exams;
     public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+    @Transient
+    public String getPhotosImagePath() {
+        if (id == null || photos == null) return "/images/default-user.png";
+        return  "/user-photos/" + this.id + "/" + this.photos;
     }
 }

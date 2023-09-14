@@ -33,6 +33,9 @@ public class Exam extends IdBasedEntity implements Comparable<Exam> {
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
     List<Question> questions = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Override
     public int compareTo(Exam o) {

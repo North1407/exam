@@ -7,7 +7,7 @@
 <div th:replace="navigation :: header_menu"></div>
 
 <div class="container" style="max-width: 750px; margin: 0 auto;">
-    <h1 class="text-center">[[${title}]]</h1>
+    <h1 class="text-center" style="margin: 25px">[[${title}]]</h1>
     <form th:action="@{/manage/questions/save}" th:object="${question}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <div class="form-group">
@@ -40,7 +40,7 @@
             <input type="hidden" name="answerIDs" th:value="${answer.id}"/>
 
             <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
-            <div class="col-sm-7">
+            <div class="col-sm-6">
                 <input type="text" class="form-control" name="answerContents" maxlength="255"
                        th:value="${answer.content}" required/>
             </div>
@@ -50,7 +50,14 @@
                 <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255"
                        th:id="${status.index}" th:checked="${answer.isCorrect}"
                        value='1'/>
-                <input type="hidden" th:id="'hidden-'+${status.index}" name="answerCorrects" value='0'>
+                <div th:if="${!answer.isCorrect}">
+                    <input type="hidden" th:id="'hidden-'+${status.index}" name="answerCorrects" value='0'>
+                </div>
+
+            </div>
+            <div class="col-sm-1">
+                <a name="linkRemoveDetail" class="btn fas fa-times-circle fa-2x icon-dark"
+                   title="Remove this Answer"></a>
             </div>
         </div>
 
@@ -59,7 +66,7 @@
             <input type="hidden" name="answerIDs" value="0"/>
 
             <label for="answer" class="col-sm-1 col-form-label">Answer:</label>
-            <div class="col-sm-7">
+            <div class="col-sm-6">
                 <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer" required/>
             </div>
 
@@ -68,6 +75,10 @@
                 <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255"
                        value='1' th:id="${#lists.size(question.answers)}">
                 <input type="hidden" th:id="'hidden-'+${#lists.size(question.answers)}" name="answerCorrects" value='0'>
+            </div>
+            <div class="col-sm-1">
+                <a name="linkRemoveDetail" class="btn fas fa-times-circle fa-2x icon-dark"
+                   title="Remove this Answer"></a>
             </div>
         </div>
 
