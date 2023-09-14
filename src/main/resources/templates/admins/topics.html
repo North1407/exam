@@ -33,9 +33,10 @@
             <td>[[${topic.name}]]</td>
             <td>
                 <div th:replace="fragments :: status(${topic.enabled}, 'topic', '/manage/topics/' + ${topic.id})"/>
-            <td><a th:href="@{'/manage/topics/edit/'+${topic.id}}">Edit</a>
+            <td>
+                <div th:replace="fragments :: edit('topic', '/manage/topics/edit/'+${topic.id})"/>
                 &nbsp;
-                <a th:href="@{'/manage/topics/delete/'+${topic.id}}">Delete</a>
+                <div th:replace="fragments :: delete('topic',${topic.id}, '/manage/topics/delete/'+${topic.id})"/>
             </td>
         </tr>
     </table>
