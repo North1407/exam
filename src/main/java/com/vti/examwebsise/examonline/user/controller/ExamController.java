@@ -25,8 +25,9 @@ public class ExamController {
     }
 
     @GetMapping("topics/{id}")
-    public String createNewExamByTopic(@PathVariable("id") Integer id,@RequestParam("difficulty") String difficulty) {
-        Exam savedExam = service.createExam(id,difficulty);
+    public String createNewExamByTopic(@PathVariable("id") Integer id,@RequestParam("difficulty") String difficulty,@AuthenticationPrincipal MyUserDetails loggerUser) {
+        Exam savedExam = service.createExam(id,difficulty,loggerUser.getUsername());
+
         return "redirect:/exam/new/" + savedExam.getId();
     }
 
@@ -41,9 +42,9 @@ public class ExamController {
     }
 
     @PostMapping("/submit")
-    public String submitExam(Exam exam, Model model, @AuthenticationPrincipal MyUserDetails loggerUser) {
+    public String submitExam(Exam exam, Model model) {
         List<Answer> answers = exam.getAnswers();
-        Exam examInDb = service.save(exam.getId(),  answers, loggerUser);
+        Exam examInDb = service.save(exam.getId(),  answers);
         model.addAttribute("result", examInDb);
         model.addAttribute("mark", examInDb.getMark());
         model.addAttribute("time",examInDb.getEndTime());

@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/manage")
 public class AdminController {
 
-
     @Autowired
     private SettingService settingService;
     @Autowired
@@ -33,6 +32,7 @@ public class AdminController {
         Exam exam = examService.get(id);
         model.addAttribute("result", exam);
         model.addAttribute("mark", exam.getMark());
+        model.addAttribute("time",exam.getEndTime());
         return "users/exams/result";
     }
     @GetMapping("/settings")

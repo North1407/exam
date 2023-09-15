@@ -24,6 +24,9 @@ public class User extends IdBasedEntity {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "authentication_type", length = 10)
+    private AuthenticationType authenticationType;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Exam> exams;
     public User(String username, String password, Role role) {

@@ -1,5 +1,6 @@
 package com.vti.examwebsise.examonline.user.service;
 
+import com.vti.examwebsise.examonline.entity.AuthenticationType;
 import com.vti.examwebsise.examonline.entity.Role;
 import com.vti.examwebsise.examonline.entity.User;
 import com.vti.examwebsise.examonline.user.repository.UserRepo;
@@ -71,4 +72,6 @@ public class UserService {
     public User getUserById(Integer id) {
         return userRepo.findById(id).get();
     }
+
+
 }
