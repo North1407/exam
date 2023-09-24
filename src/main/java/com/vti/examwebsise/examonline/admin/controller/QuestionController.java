@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -25,6 +26,7 @@ public class QuestionController {
     public String getAllQuestions(Model model, String keyword) {
         List<Topic> topics = topicService.getAllTopics();
         List<Question> questions = questionService.getAllQuestions(keyword);
+        Collections.sort(questions);
         model.addAttribute("questions", questions);
         model.addAttribute("keyword", keyword);
         model.addAttribute("topics", topics);
@@ -50,7 +52,12 @@ public class QuestionController {
     @PostMapping("/questions/save")
     public String saveQuestion(Question question, @RequestParam("answerIDs") String[] answerIds, @RequestParam("answerContents") String[] answerContents,
                                @RequestParam("answerCorrects") String[] ansCorrects, RedirectAttributes re) {
-        questionService.save(question, answerIds, answerContents, ansCorrects);
+        try {
+            questionService.save(question, answerIds, answerContents, ansCorrects);
+        } catch (RuntimeException e) {
+            re.addFlashAttribute("dangerMessage", "Answer is used in Exam");
+            return defaultRedirectURL;
+        }
         re.addFlashAttribute("message", "The question has been saved successfully");
         return defaultRedirectURL;
     }

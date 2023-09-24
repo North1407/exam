@@ -53,7 +53,7 @@ function addNextAnswerSection() {
                 <input type="text" class="form-control" name="answerContents" maxlength="255" id="answer" required/>
             </div>
 
-            <label class="col-sm-1 col-form-label">True:</label>
+            <label class="col-sm-1 col-form-label">Correct:</label>
             <div class="col-sm-2">
                 <input type="checkbox" class="form-control w-25 checkbox" name="answerCorrects" maxlength="255" value='1' id="${divDetailsCount}">
                 <input type="hidden" id="hidden-${divDetailsCount}" name="answerCorrects" value='0'>

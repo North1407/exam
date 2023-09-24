@@ -29,6 +29,10 @@ public class ResultController {
     public String getAllResult(Model model, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         User user = userService.getByUsername(username);
+        if (user.isInExam()) {
+            int lastIndex = user.getExams().size() - 1;
+            return ExamController.examRedirectURL + user.getExams().get(lastIndex).getId();
+        }
         List<Exam> exams = user.getExams();
         Collections.sort(exams);
         model.addAttribute("exams", exams);

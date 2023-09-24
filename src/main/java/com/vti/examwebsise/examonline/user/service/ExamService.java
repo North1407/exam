@@ -31,22 +31,35 @@ public class ExamService {
     public List<Topic> getTopics() {
         return topicRepo.findAll();
     }
+
     public List<Topic> getEnabledTopics() {
         return topicRepo.findAllEnabled();
     }
-    public Exam createExam(Integer topicId, String difficulty, String username) {
+
+    public Exam createExam(String topicName, String difficulty, String username) {
         User user = userRepo.findByUsername(username);
-        int numberOfQuestion = settingRepo.findByName("Number of question");
+        user.setInExam(true);
+
+        int numberOfQuestion = settingRepo.findByName("Question per exam");
         int timePerExam = settingRepo.findByName("Time per exam");
-        List<Question> questions = questionRepo.getExamQuestion(numberOfQuestion, topicId, difficulty.equals("0") ? "" : difficulty);
+        List<Question> questions = questionRepo.getExamQuestion(topicName, difficulty);
+        questions.subList(0, Math.min(numberOfQuestion, questions.size()));
+
         Exam exam = new Exam();
+        setExamInfo(exam, topicName, user, timePerExam, questions);
+
+        return examRepo.save(exam);
+    }
+
+    private void setExamInfo(Exam exam, String topicName, User user, int timePerExam, List<Question> questions) {
+        exam.setTopic(topicRepo.findByName(topicName));
         exam.setStartTime(new Date());
         exam.setEndTime(new Date(exam.getStartTime().getTime() + (timePerExam + 1) * 1000L));
         exam.setMark(0);
         exam.setQuestions(questions);
         exam.setUser(user);
-        return examRepo.save(exam);
     }
+
 
     public Exam get(Integer id) {
         return examRepo.getById(id);
@@ -54,11 +67,13 @@ public class ExamService {
 
     public Exam save(Integer id, List<Answer> answers) {
         Exam exam = get(id);
-        exam.setEndTime(new Date());
+        if(new Date().before(exam.getEndTime())){
+            exam.setEndTime(new Date());
+        }
         exam.setAnswers(answers);
         int trueCounts = checkTrueAnswer(exam.getQuestions(), answers);
         exam.setMark((float) trueCounts / exam.getQuestions().size() * 10);
-
+        exam.getUser().setInExam(false);
         return examRepo.save(exam);
     }
 
@@ -76,5 +91,9 @@ public class ExamService {
 
     public List<Exam> getAllExams() {
         return examRepo.findAll();
+    }
+
+    public void deleteExam(Integer id) {
+        examRepo.deleteById(id);
     }
 }

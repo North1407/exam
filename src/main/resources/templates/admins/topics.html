@@ -6,6 +6,12 @@
 <body>
 <div th:replace="navigation :: header_menu"></div>
 <h1 class="text-center" style="margin: 25px">Topics Management</h1>
+<div th:if="${dangerMessage != null}" class="alert alert-danger text-center">
+    [[${dangerMessage}]]
+</div>
+<div th:if="${message != null}" class="alert alert-success text-center">
+    [[${message}]]
+</div>
 <div class="container" style="max-width: 750px; margin: 0 auto;">
 <form th:action="@{/manage/topics/save}" method="post">
     <input type="hidden" name="topicId" th:value="${topicId}">

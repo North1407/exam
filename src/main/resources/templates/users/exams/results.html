@@ -18,7 +18,8 @@
     </tr>
     <tr th:each="exam,iter : ${exams}">
         <td th:text="${iter.index + 1}"></td>
-        <td th:text="${exam.questions[0].topic.name}"></td>
+        <td th:if="${exam.topic != null}" th:text="${exam.topic.name}"></td>
+        <td th:if="${exam.topic == null}" th:text="Random"></td>
         <td th:text="${exam.mark}"></td>
         <td th:text="${exam.startTime}"></td>
         <td th:text="${exam.endTime}"></td>
@@ -26,5 +27,6 @@
     </tr>
 </table>
 </div>
+<div th:replace="fragments :: user_footer"></div>
 </body>
 </html>

@@ -18,18 +18,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-//	@Autowired private UserService customerService;
-//
-//	@Override
-//	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-//			Authentication authentication) throws ServletException, IOException {
-//		MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-//		User customer = userDetails.getUser();
-//
-//		customerService.updateAuthenticationType(customer, AuthenticationType.DATABASE);
-//
-//		super.onAuthenticationSuccess(request, response, authentication);
-//	}
-//
-//
+	@Autowired private UserService customerService;
+
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws ServletException, IOException {
+		MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+		User customer = userDetails.getUser();
+
+		customerService.updateAuthenticationType(customer, AuthenticationType.DATABASE);
+
+		super.onAuthenticationSuccess(request, response, authentication);
+	}
+
+
 }

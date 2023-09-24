@@ -14,40 +14,12 @@
         </button>
         <div class="collapse navbar-collapse" id="topNavbar">
             <ul class="navbar-nav">
-
                 <li class="nav-item">
                     <a class="navbar-brand" th:href="@{/}">
-                        <img th:src="@{/images/aaa.jpg}" />
+                        <img width="90" height="60" th:src="@{/images/vti-logo.png}" />
                     </a>
                 </li>
-                <th:block sec:authorize="hasAuthority('admin')">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/manage/users}">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/manage/exams}">Exams</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/manage/questions}">Questions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/manage/topics}">Topics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/manage/settings}">Settings</a>
-                    </li>
-                </th:block>
-                <th:block sec:authorize="hasAuthority('user')">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/exam/topics}">Do Exam</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/results}">Results</a>
-                </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Contact</a>
-                    </li>
-                </th:block>
+
                 <th:block sec:authorize="!isAuthenticated()">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/login}">Login</a>
@@ -58,18 +30,51 @@
                     </li>
                 </th:block>
 
+                <th:block sec:authorize="isAuthenticated()">
 
-                <li>
-                    <a class="fas fa-user fa-2x icon-silver" th:href="@{/account}"></a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                       th:href="@{/account}"
-                       sec:authentication="principal.username"></a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" id="logoutLink" href="">Logout</a>
-                    </div>
-                </li>
+                    <th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/manage/users}">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/manage/exams}">Exams</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/manage/questions}">Questions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/manage/topics}">Topics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/manage/settings}">Settings</a>
+                        </li>
+                    </th:block>
+                    <th:block sec:authorize="hasAuthority('ROLE_USER')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/exam/topics}">Exams List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/results}">Results</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Contact</a>
+                        </li>
+
+
+                    </th:block>
+                    <li>
+                        <a class="fas fa-user fa-2x icon-silver" th:href="@{/account}"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                           th:href="@{/account}"
+                           sec:authentication="principal.username"></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" id="logoutLink" href="">Logout</a>
+                        </div>
+                    </li>
+                </th:block>
+
             </ul>
         </div>
 

@@ -27,6 +27,12 @@ public class AdminController {
         model.addAttribute("exams", exams);
         return "admins/exams";
     }
+    @GetMapping("/exams/delete/{id}")
+    public String deleteExam(@PathVariable("id") Integer id, RedirectAttributes re) {
+        examService.deleteExam(id);
+        re.addFlashAttribute("message", "The exam ID " + id + " has been deleted successfully.");
+        return "redirect:/manage/exams";
+    }
     @GetMapping("results/get/{id}")
     public String getResult(@PathVariable("id") Integer id, Model model) {
         Exam exam = examService.get(id);

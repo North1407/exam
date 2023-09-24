@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
@@ -22,8 +23,8 @@ public class AccountController {
     @Autowired
     private UserService service;
     @GetMapping("/account")
-    public String getAccountPage(@AuthenticationPrincipal MyUserDetails userDetails, Model model){
-        User user = service.getByUsername(userDetails.getUsername());
+    public String getAccountPage(HttpServletRequest request, Model model){
+        User user = service.getByUsername(request.getUserPrincipal().getName());
         model.addAttribute("user",user);
         return "users/account";
     }

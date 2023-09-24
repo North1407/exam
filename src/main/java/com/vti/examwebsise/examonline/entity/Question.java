@@ -12,12 +12,12 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question extends IdBasedEntity {
+public class Question extends IdBasedEntity implements Comparable<Question>{
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String content;
     @Column(nullable = false)
-    private int level;
+    private String level;
     @Column(nullable = false)
     private int trueAnswer;
     private boolean enabled = true;
@@ -27,7 +27,7 @@ public class Question extends IdBasedEntity {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Answer> answers = new HashSet<>();
 
-    public Question(String content, int level,int trueAnswer, Topic topic) {
+    public Question(String content, String level,int trueAnswer, Topic topic) {
         this.content = content;
         this.topic = topic;
         this.level = level;
@@ -79,5 +79,10 @@ public class Question extends IdBasedEntity {
                 ", topic='" + topic.getName() + '\'' +
                 ", level='" + level + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Question o) {
+        return this.getId().compareTo(o.getId());
     }
 }

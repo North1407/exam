@@ -28,8 +28,9 @@ public class TopicController {
     }
 
     @GetMapping("/topics/{id}/enabled/{status}")
-    public String enableTopic(@PathVariable("id") Integer id, @PathVariable("status") boolean status) {
+    public String enableTopic(@PathVariable("id") Integer id, @PathVariable("status") boolean status,RedirectAttributes re) {
         topicService.enableTopic(id, status);
+        re.addFlashAttribute("message", "The topic ID " + id + " has been " + (status ? "enabled" : "disabled") + " successfully");
         return defaultRedirectURL;
     }
     @GetMapping("/topics/edit/{id}")
@@ -41,21 +42,29 @@ public class TopicController {
     }
 
     @PostMapping("/topics/save")
-    public String saveTopic(Integer topicId,String topicName) {
+    public String saveTopic(Integer topicId,String topicName,RedirectAttributes re) {
         if(topicId!=null){
             Topic topic = topicService.getTopic(topicId);
             topic.setName(topicName);
             topicService.save(topic);
+            re.addFlashAttribute("message", "The topic has been saved successfully");
             return defaultRedirectURL;
         }
         Topic topic = new Topic(topicName);
         topicService.save(topic);
+        re.addFlashAttribute("message", "The topic has been saved successfully");
         return defaultRedirectURL;
     }
 
     @GetMapping("/topics/delete/{id}")
-    public String deleteTopic(@PathVariable("id") Integer id) {
-        topicService.deleteTopic(id);
+    public String deleteTopic(@PathVariable("id") Integer id, RedirectAttributes re) {
+        try {
+            topicService.deleteTopic(id);
+        } catch (RuntimeException e) {
+            re.addFlashAttribute("dangerMessage", "Topic is used in Exam");
+            return defaultRedirectURL;
+        }
+        re.addFlashAttribute("message", "The topic has been deleted successfully");
         return defaultRedirectURL;
     }
 }

@@ -18,6 +18,7 @@ public class UserService {
     UserRepo userRepo;
     @Autowired
     PasswordEncoder passwordEncoder;
+
     public void registerUser(User user) {
         user.setRole(new Role(2));
         user.setEnabled(true);
@@ -49,7 +50,7 @@ public class UserService {
     }
 
     public User updateAccount(User userInForm) {
-        User userInDB = userRepo.findById(userInForm.getId()).get();
+        User userInDB = userRepo.findById(userInForm.getId()).orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!userInForm.getPassword().isEmpty()) {
             userInDB.setPassword(userInForm.getPassword());
@@ -59,7 +60,9 @@ public class UserService {
         if (userInForm.getPhotos() != null) {
             userInDB.setPhotos(userInForm.getPhotos());
         }
-        userInDB.setRole(userInForm.getRole());
+        if (userInForm.getRole() != null) {
+            userInDB.setRole(userInForm.getRole());
+        }
         userInDB.setUsername(userInForm.getUsername());
         return userRepo.save(userInDB);
     }
@@ -70,8 +73,22 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
-        return userRepo.findById(id).get();
+        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public void addNewCustomerUponOAuthLogin(String name, AuthenticationType authenticationType) {
+        User customer = new User();
+        customer.setUsername(name);
+        customer.setEnabled(true);
+        customer.setAuthenticationType(authenticationType);
+        customer.setPassword("");
+        customer.setRole(new Role(2));
 
+        userRepo.save(customer);
+    }
+
+    public void updateAuthenticationType(User customer, AuthenticationType authenticationType) {
+        customer.setAuthenticationType(authenticationType);
+        userRepo.save(customer);
+    }
 }

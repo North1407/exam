@@ -12,7 +12,7 @@
 </div>
 <div th:object="${result}">
     <div th:each="question, iter : ${result.questions}" class="question-container">
-        <p style="font-size: 24px;" th:text="'Question '+ ${iter.index + 1 +': '+ question.content}"></p>
+        <pre style="font-size: 24px;" th:text="'Question '+ ${iter.index + 1 +': '+ question.content}"></pre>
         <div th:each="answer : ${question.answers}" th:class="${answer.isCorrect} ? 'correct' : (${result.answers.contains(answer)} ? 'incorrect' : '')">
             <label th:if="${question.trueAnswer != 1}">
                 <input type="checkbox" th:field="*{answers}" th:name="${question.id}" th:value="${answer.id}" disabled>
@@ -27,6 +27,6 @@
 </div>
 
 <br>
-
+<div th:replace="fragments :: user_footer"></div>
 </body>
 </html>

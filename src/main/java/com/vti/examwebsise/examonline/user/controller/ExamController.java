@@ -3,37 +3,60 @@ package com.vti.examwebsise.examonline.user.controller;
 import com.vti.examwebsise.examonline.entity.*;
 import com.vti.examwebsise.examonline.sercutity.MyUserDetails;
 import com.vti.examwebsise.examonline.user.service.ExamService;
+import com.vti.examwebsise.examonline.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RequestMapping("/exam")
 @Controller
 public class ExamController {
+    public static final String examRedirectURL = "redirect:/exam/new/";
     @Autowired
-    ExamService service;
+    private ExamService service;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/topics")
-    public String getAllExamTopic(Model model) {
+    public String getAllExamTopic(Model model,HttpServletRequest request) {
+        String username = request.getUserPrincipal().getName();
+        User user = userService.getByUsername(username);
+        if (user.isInExam()) {
+            int lastIndex = user.getExams().size() - 1;
+            return examRedirectURL + user.getExams().get(lastIndex).getId();
+        }
         List<Topic> topics = service.getEnabledTopics();
         model.addAttribute("topics", topics);
         return "users/exams/topics";
     }
 
-    @GetMapping("topics/{id}")
-    public String createNewExamByTopic(@PathVariable("id") Integer id,@RequestParam("difficulty") String difficulty,@AuthenticationPrincipal MyUserDetails loggerUser) {
-        Exam savedExam = service.createExam(id,difficulty,loggerUser.getUsername());
-
-        return "redirect:/exam/new/" + savedExam.getId();
+    @GetMapping("topics/{topicName}")
+    public String createNewExamByTopic(@PathVariable("topicName") String topicName, @RequestParam("difficulty") String difficulty, HttpServletRequest request) {
+        String username = request.getUserPrincipal().getName();
+        User user = userService.getByUsername(username);
+        if (user.isInExam()) {
+            int lastIndex = user.getExams().size() - 1;
+            return examRedirectURL + user.getExams().get(lastIndex).getId();
+        }
+        Exam savedExam = service.createExam(topicName,"0".equals(difficulty) ? "":difficulty,username);
+        return examRedirectURL + savedExam.getId();
     }
 
     @GetMapping("/new/{id}")
     public String getExam(@PathVariable("id") Integer id, Model model) {
         Exam exam = service.get(id);
+        if(new Date().after(exam.getEndTime())){
+            exam = service.save(id, new ArrayList<>());
+            model.addAttribute("result", exam);
+            model.addAttribute("mark", exam.getMark());
+            model.addAttribute("time",exam.getEndTime());
+            return "users/exams/result";
+        }
         List<String> answerIds = new ArrayList<>();
         model.addAttribute("exam", exam);
         model.addAttribute("answerIds", answerIds);

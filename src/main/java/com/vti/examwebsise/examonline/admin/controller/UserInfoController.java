@@ -31,13 +31,15 @@ public class UserInfoController {
         return "admins/users/users";
     }
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) {
+    public String deleteUser(@PathVariable("id") Integer id,RedirectAttributes re) {
         userService.deleteUser(id);
+        re.addFlashAttribute("message", "The user ID " + id + " has been deleted successfully.");
         return defaultRedirectURL;
     }
     @GetMapping("/users/{id}/enabled/{status}")
-    public String enableUser(@PathVariable("id") Integer id, @PathVariable("status") boolean status) {
+    public String enableUser(@PathVariable("id") Integer id, @PathVariable("status") boolean status,RedirectAttributes re) {
         userService.enableUser(id, status);
+        re.addFlashAttribute("message", "The user ID " + id + " has been " + (status ? "enabled" : "disabled") + " successfully");
         return defaultRedirectURL;
     }
     @GetMapping("/users/edit/{id}")

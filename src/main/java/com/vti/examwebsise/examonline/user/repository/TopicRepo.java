@@ -10,4 +10,6 @@ import java.util.List;
 public interface TopicRepo extends JpaRepository<Topic,Integer> {
     @Query("SELECT t FROM Topic t where t.enabled = true")
     List<Topic> findAllEnabled();
+
+    Topic findByName(String topicName);
 }

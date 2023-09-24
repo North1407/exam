@@ -20,7 +20,10 @@ public class User extends IdBasedEntity {
     @Column(nullable = false)
     private String password;
     private String photos;
+    @Column(nullable = false)
     private boolean enabled;
+    @Column(name = "in_exam",nullable = false)
+    private boolean inExam;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

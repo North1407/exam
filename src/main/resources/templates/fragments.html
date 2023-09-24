@@ -15,28 +15,6 @@
 </head>
 <body>
 
-<div th:fragment="user_footer" class="text-center m-3">
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bottomNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="bottomNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">Privacy Notice</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">Returns &amp; Refunds</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</div>
-
-
 
 
 <div th:fragment="edit(entityName, editURL)" th:remove="tag">
@@ -110,8 +88,19 @@
     <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}"
          style="width: 100px" />
 </div>
-<div th:fragment="admin_footer" class="text-center m-3">
-    <p>Dev Control Panel - Copyright &copy; Dev</p>
+<div  th:fragment="admin_footer" class="text-center m-3">
+    <p style="margin-top: 75px">VTI Exam Page Control Panel - Copyright &copy; VTI</p>
 </div>
+
+<div th:fragment="user_footer" class="text-center m-3">
+    <div style="margin-top: 75px" class="footer-info">
+        <p>VTI Joint Stock Company</p>
+        <p>Email: info@vti.com.vn</p>
+        <p>Telephone: (+84) 24 7303 9996</p>
+        <p>Address: VTI Building, Me Tri Ha, Nam Tu Liem, Ha Noi</p>
+        <p>Copyright ©2019 VTI Corporation All Rights Reserved.</p>
+    </div>
+</div>
+
 </body>
 </html>

@@ -18,7 +18,9 @@ public class Exam extends IdBasedEntity implements Comparable<Exam> {
     private Date startTime;
     @Column(name = "end_time")
     private Date endTime;
-
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "exams_answers",
@@ -26,7 +28,7 @@ public class Exam extends IdBasedEntity implements Comparable<Exam> {
             inverseJoinColumns = @JoinColumn(name = "answer_id")
     )
     private List<Answer> answers = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "exams_questions",
             joinColumns = @JoinColumn(name = "exam_id"),
