@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface SettingRepo extends JpaRepository<Setting, Integer> {
     @Query("select s.value from Setting s where s.name = ?1")
-    int findByName(String name);
+    Integer findByName(String name);
 }

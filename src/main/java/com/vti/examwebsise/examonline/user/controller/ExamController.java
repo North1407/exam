@@ -43,7 +43,7 @@ public class ExamController {
             int lastIndex = user.getExams().size() - 1;
             return examRedirectURL + user.getExams().get(lastIndex).getId();
         }
-        Exam savedExam = service.createExam(topicName,"0".equals(difficulty) ? "":difficulty,username);
+        Exam savedExam = service.createExam(" ".equals(topicName)? "":topicName, "0".equals(difficulty) ? "":difficulty,username);
         return examRedirectURL + savedExam.getId();
     }
 
@@ -73,5 +73,14 @@ public class ExamController {
         model.addAttribute("time",examInDb.getEndTime());
         return "users/exams/result";
     }
+
+    @GetMapping("/quit")
+    public String quitExam(HttpServletRequest request){
+        String username = request.getUserPrincipal().getName();
+        User user = userService.getByUsername(username);
+        userService.setInExamStatus(user, false);
+        return "redirect:/exam/topics";
+    }
+
 }
 

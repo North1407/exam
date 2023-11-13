@@ -91,4 +91,10 @@ public class UserService {
         customer.setAuthenticationType(authenticationType);
         userRepo.save(customer);
     }
+
+    public void setInExamStatus(User user, boolean status) {
+        user.setInExam(status);
+        userRepo.save(user);
+    }
+
 }

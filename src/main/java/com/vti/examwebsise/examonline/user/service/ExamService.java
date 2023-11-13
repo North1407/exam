@@ -40,10 +40,20 @@ public class ExamService {
         User user = userRepo.findByUsername(username);
         user.setInExam(true);
 
-        int numberOfQuestion = settingRepo.findByName("Question per exam");
-        int timePerExam = settingRepo.findByName("Time per exam");
+        Integer numberOfQuestion = settingRepo.findByName("Question per exam");
+        Integer timePerExam = settingRepo.findByName("Time per exam");
+
+        if (numberOfQuestion == null) {
+            numberOfQuestion = 10;
+            settingRepo.save(new Setting("Question per exam", numberOfQuestion));
+        }
+        if (timePerExam == null) {
+            timePerExam = 600;
+            settingRepo.save(new Setting("Time per exam", timePerExam));
+        }
+
         List<Question> questions = questionRepo.getExamQuestion(topicName, difficulty);
-        questions.subList(0, Math.min(numberOfQuestion, questions.size()));
+        questions = questions.subList(0, Math.min(numberOfQuestion, questions.size()));
 
         Exam exam = new Exam();
         setExamInfo(exam, topicName, user, timePerExam, questions);
