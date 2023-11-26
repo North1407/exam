@@ -53,6 +53,14 @@ public class ExamService {
         }
 
         List<Question> questions = questionRepo.getExamQuestion(topicName, difficulty);
+        if (questions.isEmpty()) {
+//            questionRepo.setAllEnabledQuestion(topicName, difficulty);
+//            questions = questionRepo.getExamQuestion(topicName, difficulty);
+        } else {
+            for (Question question : questions) {
+                questionRepo.setDisable(question.getId());
+            }
+        }
         questions = questions.subList(0, Math.min(numberOfQuestion, questions.size()));
 
         Exam exam = new Exam();
